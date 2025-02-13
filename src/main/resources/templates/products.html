@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Product List</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<!-- Navigation Bar -->
+<div class="navbar">
+    <a th:href="@{/products}">Products</a>
+    <a th:href="@{/logout}">Logout</a>
+</div>
+
+<div class="container">
+    <h1>Product List</h1>
+
+    <div class="form-group">
+        <label for="filter">Filter by Name:</label>
+        <input type="text" id="filter" name="keyword" th:value="${keyword}" class="form-control" />
+        <div class="buttons">
+            <button onclick="filterProducts()" class="btn btn-primary">Filter</button>
+            <button onclick="clearFilter()" class="btn btn-secondary">Clear Filter</button>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="sortBy">Sort by:</label>
+        <select id="sortBy" name="sortBy" class="form-control" onchange="sortProducts()">
+            <option th:value="name" th:selected="${sortBy == 'name'}">Name</option>
+            <option th:value="price" th:selected="${sortBy == 'price'}">Price</option>
+            <option th:value="category" th:selected="${sortBy == 'category'}">Category</option>
+        </select>
+    </div>
+
+    <a th:href="@{/products/add}" class="btn btn-primary mb-3">Add New Product</a>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Available</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.description}"></td>
+            <td th:text="${product.price}"></td>
+            <td th:text="${product.category.name}"></td>
+            <td th:text="${product.available ? 'Yes' : 'No'}"></td>
+            <td class="actions">
+                <a th:href="@{'/products/edit/' + ${product.id}}" class="btn">Edit</a>
+                <a th:href="@{'/products/delete/' + ${product.id}}" class="btn" onclick="return confirm('Are you sure you want to delete this product?');">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function filterProducts() {
+        const keyword = document.getElementById('filter').value;
+        const sortBy = document.getElementById('sortBy').value;
+        const queryString = sortBy ? `?keyword=${keyword}&sortBy=${sortBy}` : `?keyword=${keyword}`;
+        window.location.href = `/products${queryString}`;
+    }
+
+    function clearFilter() {
+        const sortBy = document.getElementById('sortBy').value;
+        const queryString = sortBy ? `?sortBy=${sortBy}` : '';
+        window.location.href = `/products${queryString}`;
+    }
+
+    function sortProducts() {
+        const sortBy = document.getElementById('sortBy').value;
+        const keyword = document.getElementById('filter').value;
+        const queryString = keyword ? `?keyword=${keyword}&sortBy=${sortBy}` : `?sortBy=${sortBy}`;
+        window.location.href = `/products${queryString}`;
+    }
+</script>
+</body>
+</html>
