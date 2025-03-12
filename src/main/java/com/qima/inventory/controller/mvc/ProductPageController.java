@@ -11,36 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/*
-@Controller
-public class HomeController {
-
-    @Autowired
-    private ProductService productService;
-
-    @Autowired
-    private CategoryService categoryService;
-
-
-    @GetMapping("/")
-    public String getAllProducts(Model model) {
-        // since there is a service to fetch products and add them to the model
-        model.addAttribute("products", productService.getAllProducts());
-        return "products"; // This will render the products.html template
-    }
-
-    // Show form to add a new product
-    @GetMapping("/add")
-    public String showAddProductForm(Model model) {
-        Product product = new Product();
-        model.addAttribute("product", product);
-        model.addAttribute("categories", categoryService.getAllCategories());
-        return "product-form";
-    }
-
-    // Process form to add a new product
-}*/
-
 @Controller
 @RequestMapping("/products")
 public class ProductPageController {
